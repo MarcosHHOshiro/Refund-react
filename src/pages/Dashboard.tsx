@@ -5,12 +5,13 @@ import { RefundItem } from "../components/RefundItem"
 
 import SearchSvg from "../assets/search.svg"
 import { CATEGORIES } from "../utils/categories"
+import { formatCurrency } from "../utils/formatCurrency"
 
 const REFUND_EXAMPLE = {
     id: "123",
     name: "Marcos",
     category: "Transporte",
-    amount: "34,50",
+    amount: formatCurrency(34.50),
     categoryImg: CATEGORIES['transport'].icon
 }
 
