@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { Input } from "../components/Input"
+import { Button } from "../components/Button"
+import SearchSvg from "../assets/search.svg"
 
 export function DashBoard() {
     const [name, setName] = useState("")
@@ -16,7 +18,12 @@ export function DashBoard() {
 
             <form onSubmit={fetchRefunds} className="flex flex-1 items-center justify-between pb-6 border-b border-b-gray-400 md:flex-row gap-2 mt-6">
                 <Input placeholder="Pesquisar pelo nome" onChange={(e) => setName(e.target.value)} />
+
+                <Button type="submit" variant="icon">
+                    <img src={SearchSvg} alt="Icone de pesquisar" className="w-5" />
+                </Button>
             </form>
+
         </div>
     )
 }
