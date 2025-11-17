@@ -1,33 +1,51 @@
-import { useState } from "react"
+import { useActionState } from "react"
 import { Input } from "../components/Input"
 import { Button } from "../components/Button"
+import { z, ZodError } from "zod"
+
+const signInScheme = z.object({
+    email: z.email({ message: "E-mail inválido" }),
+    password: z.string().trim().min(1, { message: "Informe a senha" })
+})
 
 export function SignIn() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
 
-    function onSubmit(e: React.FormEvent) {
-        e.preventDefault()
-        console.log(email, password)
+    const [state, formAction, isLoading] = useActionState(signIn, null)
+
+    async function signIn(prevState: any, formData: FormData) {
+        try {
+            const data = signInScheme.parse({
+                email: formData.get("email"),
+                password: formData.get("password")
+            })
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return alert(error.issues[0].message)
+            }
+        }
+
+        console.log(data)
     }
 
+
     return (
-        <form onSubmit={onSubmit} className="w-full flex flex-col gap-4" >
+        <form action={formAction} className="w-full flex flex-col gap-4" >
             <Input
+                name="email"
                 required
                 legend="E-mail"
                 type="email"
                 placeholder="seu@Email.com"
-                onChange={(e) => setEmail(e.target.value)}
+            // onChange={(e) => setEmail(e.target.value)}
             />
 
             <Input
+                name="password"
                 required
                 legend="Senha"
                 type="password"
                 placeholder="senha"
-                onChange={(e) => setPassword(e.target.value)}
+            // onChange={(e) => setPassword(e.target.value)}
             />
 
             <Button type="submit" isLoading={isLoading}>
