@@ -9,7 +9,7 @@ const signInScheme = z.object({
     email: z.email({ message: "E-mail inválido" }),
     password: z.string({ message: "Informe a senha" }).trim().min(6, { message: "A senha deve ter pelo menos 6 caracteres" })
 })
-
+//teste
 export function SignIn() {
 
     const [state, formAction, isLoading] = useActionState(signIn, null)
