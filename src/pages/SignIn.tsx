@@ -2,10 +2,12 @@ import { useActionState } from "react"
 import { Input } from "../components/Input"
 import { Button } from "../components/Button"
 import { z, ZodError } from "zod"
+import { api } from "../services/api"
+import { AxiosError } from "axios"
 
 const signInScheme = z.object({
     email: z.email({ message: "E-mail inválido" }),
-    password: z.string().trim().min(1, { message: "Informe a senha" })
+    password: z.string({ message: "Informe a senha" }).trim().min(6, { message: "A senha deve ter pelo menos 6 caracteres" })
 })
 
 export function SignIn() {
@@ -18,13 +20,23 @@ export function SignIn() {
                 email: formData.get("email"),
                 password: formData.get("password")
             })
+
+            const response = await api.post("/sessions", data)
+            console.log(response.data)
+            const { token } = response.data
+
         } catch (error) {
             if (error instanceof ZodError) {
-                return alert(error.issues[0].message)
+                return { message: error.issues[0].message }
             }
+
+            if (error instanceof AxiosError) {
+                return { message: error.response?.data.message }
+            }
+
+            return { message: "Nao foi possivel entrar" }
         }
 
-        console.log(data)
     }
 
 
@@ -47,6 +59,10 @@ export function SignIn() {
                 placeholder="senha"
             // onChange={(e) => setPassword(e.target.value)}
             />
+
+            <p className="text-sm text-red-600 text-center my-4 font-medium">
+                {state?.message}
+            </p>
 
             <Button type="submit" isLoading={isLoading}>
                 Entrar
