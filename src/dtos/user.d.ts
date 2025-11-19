@@ -1,8 +1,8 @@
 type UserAPIRole = "employee" | "manager"
 
-type UserApiResponse = {
+type UserAPIResponse = {
     token: string
-    user: {
+    userWithoutPassword: {
         id: string
         name: string
         email: string
