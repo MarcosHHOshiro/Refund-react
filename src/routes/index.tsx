@@ -4,12 +4,13 @@ import { AuthRoutes } from "./AuthRoutes";
 import { ManagerRoutes } from "./ManagerRoutes";
 import { EmployeeRoutes } from "./EmployeeRoutes";
 import { useAuth } from "../hooks/useAuth";
+import { Loading } from "../components/Loading";
 
-const isLoading = false
+// const isLoading = false
 // const session = undefined
 
 export function Routes() {
-    const { session } = useAuth()
+    const { session, isLoading } = useAuth()
 
     function Route() {
         switch (session?.userWithoutPassword.role) {
@@ -22,9 +23,9 @@ export function Routes() {
         }
     }
 
-    // if (isLoading) {
-    //     return <Loading />
-    // }
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <BrowserRouter>
