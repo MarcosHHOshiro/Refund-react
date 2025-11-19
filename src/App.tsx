@@ -7,5 +7,4 @@ export function App() {
       < Routes />
     </AuthProvider>
   )
-
 }
